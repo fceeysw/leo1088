@@ -37,6 +37,15 @@ var task = {
      .pipe(header('/*! <%= pkg.realname %> mobile-v<%= pkg.mobile %> <%= pkg.description %> <%= pkg.license %> License */\n ;', {pkg: pkg}))
     .pipe(gulp.dest('./dist/mobile'));
   }
+  ,i18n: function() {
+    return gulp.src('./src/layer-i18n.js').pipe(uglify({
+      output: {
+        ascii_only: true //escape Unicode characters in strings and regexps
+      }
+    }))
+        .pipe(header('/*! <%= pkg.realname %> mobile-v<%= pkg.mobile %> <%= pkg.description %> <%= pkg.license %> License */\n ;', {pkg: pkg}))
+        .pipe(gulp.dest('./dist'));
+  }
   ,other: function(){
     gulp.src('./src/**/*.{png,gif}').pipe(rename({}))
     .pipe(gulp.dest('./dist'));
@@ -49,6 +58,7 @@ gulp.task('clear', function(cb){ //清理
 });
 gulp.task('layer', task.minjs); //压缩PC版本
 gulp.task('mobile', task.mincss); //压缩Mobile文件
+gulp.task('i18n', task.minjs); //压缩i18n文件
 gulp.task('other', task.other); //移动一些配件
 
 //发行版本目录
